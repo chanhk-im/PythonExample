@@ -64,6 +64,9 @@ chaquopy {
         buildPython("C:/Users/User/AppData/Local/Programs/Python/Python38/python.exe")
         pip {
             install("opencv-python-headless")
+            install("numpy")
+            install("scikit-learn")
+            install("matplotlib")
         }
     }
     productFlavors {

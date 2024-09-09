@@ -39,6 +39,7 @@
 package com.example.myapplication
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
@@ -50,6 +51,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
@@ -72,6 +74,8 @@ class MainActivity : AppCompatActivity() {
     val STORAGE_CODE = 99
     val py = Python.getInstance()
     val pyf = py.getModule("opencv_script")
+    val pyf2 = py.getModule("Brick_Line_Detection")
+    val a = pyf2.callAttr("main", "Line_Data.jpg")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,6 +178,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 결과
+    @SuppressLint("ClickableViewAccessibility")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -192,6 +197,19 @@ class MainActivity : AppCompatActivity() {
 
                         // 이미지 뷰에 설정
                         imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size))
+                        imageView.setOnTouchListener { _, event ->
+                            when (event.action) {
+                                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                                    // 터치 좌표를 가져옴
+                                    val x = event.x
+                                    val y = event.y
+
+                                    // 좌표를 로그로 출력
+                                    println("Touched at: ($x, $y)")
+                                }
+                            }
+                            true
+                        }
                     }
                 }
                 STORAGE_CODE -> {

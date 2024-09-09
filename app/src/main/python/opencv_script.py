@@ -2,8 +2,10 @@
 import cv2
 import numpy as np
 import base64
+from test import myFun
 
 def process_image(img_str):
+    myFun()
     img_bytes = base64.b64decode(img_str)
     nparr = np.frombuffer(img_bytes, np.uint8)
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
